@@ -1,0 +1,11 @@
+{
+  "name": "express-mhr",
+  "version": "1.0.0",
+  "description": "Express server for serving the JSON files retrieved by the wiki web scraper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
