@@ -22,7 +22,7 @@ export function weaponRouter() {
             let file = req.params.name.replace(/\s/g, '-');
             let weaponFile = JSON.parse(fs.readFileSync(`data/weapons/${type}/${file}.json`));
             res.json(weaponFile);
-        })
+        });
     });
 
     router.get('/', (req, res) => {        
