@@ -1,5 +1,5 @@
 import express from 'express';
-import { weaponRouter } from './weaponrouter.js';
+import { weaponRouter } from './weaponRouter.js';
 
 const port = 3000;
 
