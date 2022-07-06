@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs';
+import { Sorter } from './sorter.js';
 
 const router = express.Router();
 
@@ -39,8 +40,10 @@ export function weaponRouter() {
                 weapons.push(weapon);
             });
         });
-        
-        res.json(weapons);
+
+        const sortedWeapons = Sorter.applyWeaponSortAndFilter(req, weapons);
+
+        res.json(sortedWeapons);
     });    
 
 
