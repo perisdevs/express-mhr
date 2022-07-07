@@ -27,6 +27,7 @@ export class Sorter {
         if (req.query.element) filter.element = req.query.element;
         if (req.query.defenseBonus) filter.defenseBonus = req.query.defenseBonus;
         if (req.query.affinity) filter.affinty = req.query.affinity;
+        if (req.query.type) filter.type = req.query.type;
         
 
         let filteredWeapons = [];
