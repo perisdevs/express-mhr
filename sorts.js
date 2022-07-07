@@ -229,9 +229,9 @@ export function sortWeaponsAscending(weapons, sortBy) {
         case 'name': sortedWeapons = sortWeaponsByNameAscending(sortedWeapons); break;
         case 'damage': sortedWeapons = sortWeaponsByDamageAscending(sortedWeapons); break;
         case 'slots': sortedWeapons = sortWeaponsBySlotsAscending(sortedWeapons); break;                    
-        case 'rslot': sortedWeapons = sortWeaponsByRSlotAscending(sortedWeapons); break;
-        case 'edamage': sortedWeapons = sortWeaponsByEDamageAscending(sortedWeapons); break;
-        case 'dbonus': sortedWeapons = sortWeaponsByDBonusAscending(sortedWeapons); break;
+        case 'rampageSlot': sortedWeapons = sortWeaponsByRSlotAscending(sortedWeapons); break;
+        case 'elementDamage': sortedWeapons = sortWeaponsByEDamageAscending(sortedWeapons); break;
+        case 'defenseBonus': sortedWeapons = sortWeaponsByDBonusAscending(sortedWeapons); break;
         case 'affinity': sortedWeapons = sortWeaponsByAffinityAscending(sortedWeapons); break;
         case 'sharpness': sortedWeapons = sortWeaponsBySharpnessAscending(sortedWeapons); break;
     }
@@ -248,9 +248,9 @@ export function sortWeaponsDescending(weapons, sortBy) {
         case 'name': sortedWeapons = sortWeaponsByNameDescending(sortedWeapons); break;
         case 'damage': sortedWeapons = sortWeaponsByDamageDescending(sortedWeapons); break;
         case 'slots': sortedWeapons = sortWeaponsBySlotsDescending(sortedWeapons); break;                    
-        case 'rslot': sortedWeapons = sortWeaponsByRSlotDescending(sortedWeapons); break;
-        case 'edamage': sortedWeapons = sortWeaponsByEDamageDescending(sortedWeapons); break;
-        case 'dbonus': sortedWeapons = sortWeaponsByDBonusDescending(sortedWeapons); break;
+        case 'rampageSlot': sortedWeapons = sortWeaponsByRSlotDescending(sortedWeapons); break;
+        case 'elementDamage': sortedWeapons = sortWeaponsByEDamageDescending(sortedWeapons); break;
+        case 'defenseBonus': sortedWeapons = sortWeaponsByDBonusDescending(sortedWeapons); break;
         case 'affinity': sortedWeapons = sortWeaponsByAffinityDescending(sortedWeapons); break;
         case 'sharpness': sortedWeapons = sortWeaponsBySharpnessDescending(sortedWeapons); break;
     }

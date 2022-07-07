@@ -24,6 +24,7 @@ export class Sorter {
         if (req.query.slotLevels) filter.slotLevels = req.query.slotLevels;
         if (req.query.rampageSlot) filter.rampageSlot = req.query.rampageSlot;
         if (req.query.elementDamage) filter.elementDamage = req.query.elementDamage;
+        if (req.query.element) filter.element = req.query.element;
         if (req.query.defenseBonus) filter.defenseBonus = req.query.defenseBonus;
         if (req.query.affinity) filter.affinty = req.query.affinity;
         
@@ -36,7 +37,31 @@ export class Sorter {
 
             for (const param in filter) {
 
-                if (weapon[param] != filter[param]) matchesFilter = false;
+                switch (param) {
+
+                    case 'name': if (!weapon.name.includes(filter.name)) matchesFilter = false; break;
+
+                    case 'slotLevels':
+                        Array.from(filter.slotLevels).forEach((slot, i) => {
+                            if (parseInt(slot) != weapon.slotLevels[i]) matchesFilter = false;
+                        });
+                        break;
+
+                    case 'element':
+                        if (weapon.elementDamage) {
+                            if (filter.element != weapon.elementDamage.type) matchesFilter = false;
+                        } else matchesFilter = false;
+                        break;
+
+                    case 'elementDamage':
+                        if (weapon.elementDamage) {
+                            if (filter.elementDamage != weapon.elementDamage.damage) matchesFilter = false;
+                        } else matchesFilter = false;
+                        break;
+                        
+                    default: if (weapon[param] != filter[param]) matchesFilter = false; break;
+                }
+                
             }
 
             if (matchesFilter) filteredWeapons.push(weapon);
