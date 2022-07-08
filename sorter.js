@@ -134,9 +134,20 @@ export class Sorter {
             case 'elementDamage':
                 filteredArray.sort((a, b) => {
                     switch (sortOrder) {
-                        case 'asc': return a.elementDamage.damage - b.elementDamage.damage; break;
-                        case 'desc': return b.elementDamage.damage - a.elementDamage.damage; break;
-                        default: return b.elementDamage.damage - a.elementDamage.damage; break;
+                        case 'asc':
+                            if (!a.elementDamage) return -1;
+                            if (!b.elementDamage) return 1;
+                            return a.elementDamage.damage - b.elementDamage.damage;
+                            
+                        case 'desc':
+                            if (!a.elementDamage) return 1;
+                            if (!b.elementDamage) return -1;
+                            return b.elementDamage.damage - a.elementDamage.damage;
+
+                        default:
+                            if (!a.elementDamage) return 1;
+                            if (!b.elementDamage) return -1;
+                            return b.elementDamage.damage - a.elementDamage.damage;
                     }
                 });
                 break;
