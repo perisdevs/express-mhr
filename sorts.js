@@ -258,3 +258,110 @@ export function sortWeaponsDescending(weapons, sortBy) {
     return sortedWeapons;
 }
 
+function sortArmorAscending(param, armor) {
+    let sortedArmor = structuredClone(armor);
+
+    switch (param) {
+
+        case 'name':
+            sortedArmor.sort((a, b) => {
+                let x = a.name.toLowerCase();
+                let y = b.name.toLowerCase();
+                if (x < y) return -1;
+                if (x > y) return 1;
+            });
+            break;
+
+        case 'type':
+            sortedArmor.sort((a, b) => {
+                let x = a.type.toLowerCase();
+                let y = b.type.toLowerCase();
+                if (x < y) return -1;
+                if (x > y) return 1;
+            });
+            break;     
+            
+        case 'skillSlots':
+            sortedArmor.sort((a, b) => {
+
+                let sumA = 0;
+                a.skillSlots.forEach((level) => {
+                    sumA += level;
+                });
+
+                let sumB = 0;
+                b.skillSlots.forEach((level) => {
+                    sumB += level;
+                });
+
+                return sumA - sumB;
+            });
+            break;
+
+        default: sortedArmor.sort((a,b) => {a[param] - b[param]}); break;
+    }
+
+    return sortedArmor;
+}
+
+function sortArmorDescending(param, armor) {
+    let sortedArmor = structuredClone(armor);
+
+    switch (param) {
+
+        case 'name':
+            sortedArmor.sort((a, b) => {
+                let x = a.name.toLowerCase();
+                let y = b.name.toLowerCase();
+                if (x < y) return 1;
+                if (x > y) return -1;
+            });
+            break;
+
+        case 'type':
+            sortedArmor.sort((a, b) => {                        
+                let x = a.type.toLowerCase();
+                let y = b.type.toLowerCase();
+                if (x < y) return 1;
+                if (x > y) return -1;
+            });
+            break;
+
+        case 'skillSlots':
+            sortedArmor.sort((a, b) => {
+
+                let sumA = 0;
+                a.skillSlots.forEach((level) => {
+                    sumA += level;
+                });
+
+                let sumB = 0;
+                b.skillSlots.forEach((level) => {
+                    sumB += level;
+                });
+
+                return sumB - sumA;
+            });
+            break;
+
+        default: sortedArmor.sort((a,b) => {return b[param] - a[param]}); break;
+    }
+
+    return sortedArmor;
+}
+
+export function sortArmorByParam(param, order, armor) {
+    let sortedArmor = structuredClone(armor);
+
+    switch (order) {
+
+        case 'asc': sortedArmor = sortArmorAscending(param, armor); break;
+
+        case 'desc': sortedArmor = sortArmorDescending(param, armor); break;
+
+        default: sortedArmor = sortArmorDescending(param, armor); break;
+    }
+
+    return sortedArmor;
+}
+

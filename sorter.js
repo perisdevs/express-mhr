@@ -1,4 +1,4 @@
-import { sortWeaponsAscending, sortWeaponsDescending } from "./sorts.js";
+import { sortArmorByParam, sortWeaponsAscending, sortWeaponsDescending } from "./sorts.js";
 
 export class Sorter {
     
@@ -71,5 +71,51 @@ export class Sorter {
         if (filteredWeapons[0]) {
             return filteredWeapons;
         } else return sortedWeapons;
+    }
+
+    static applyArmorSortAndFilter(req, armor) {
+        let sortedArmor = structuredClone(armor);
+        sortedArmor = sortArmorByParam(req.query.sortBy, req.query.sortOrder, armor);
+
+        let filter = {};
+        for (const param in req.query) {
+
+            switch (param) {
+
+                case 'sortBy': break;
+                case 'sortOrder': break;
+
+                default: filter[param] = req.query[param]; break;
+            }            
+        }
+
+        let filteredArmor = [];
+        
+        sortedArmor.forEach((armor) => {
+
+            let matchesFilter = true;
+
+            for (const param in filter) {
+
+                switch (param) {
+
+                    case 'name': if (!armor.name.includes(filter.name)) matchesFilter = false; break;
+
+                    case 'skillSlots':
+                        Array.from(filter.skillSlots).forEach((slot, i) => {
+                            if (parseInt(slot) != armor.skillSlots[i]) matchesFilter = false;
+                        });                        
+                        break;
+
+                    default: if (armor[param] != filter[param]) matchesFilter = false; break;
+                }
+            }
+
+            if (matchesFilter) filteredArmor.push(armor);
+        });
+
+        if (filteredArmor[0]) {
+            return filteredArmor;
+        } else return sortedArmor;
     }
 }

@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs';
+import { Sorter } from './sorter.js';
 
 const router = express.Router();
 
@@ -38,10 +39,13 @@ export function armorRouter() {
                 let armor = JSON.parse(fs.readFileSync(`data/armors/${type}/${file}`));
                 armors.push(armor);
             });
-
-            res.json(armors);
+            
         });
-    })
+
+        const sortedArmor = Sorter.applyArmorSortAndFilter(req, armors);
+
+        res.json(sortedArmor);
+    });
 
     return router;
 }
