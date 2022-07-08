@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs';
+import { Sorter } from './sorter.js';
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ export function skillRouter() {
             let skill = JSON.parse(fs.readFileSync(`data/skills/${file}`));
             skills.push(skill);
         });
-        res.json(skills);
+
+        const sortedSkills = Sorter.applySortAndFilter(req, skills);
+
+        res.json(sortedSkills);
     });
 
     router.get('/:name', (req, res) => {

@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs';
+import { Sorter } from './sorter.js';
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ export function decorationRouter() {
             let decoration = JSON.parse(fs.readFileSync(`data/decorations/${file}`));
             decorations.push(decoration);
         });
-        res.json(decorations);
+
+        const sortedDecorations = Sorter.applySortAndFilter(req, decorations);
+
+        res.json(sortedDecorations);
     });
 
     router.get('/:name', (req, res) => {

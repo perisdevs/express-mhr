@@ -1,5 +1,6 @@
 import express from 'express';
 import fs from 'fs';
+import { Sorter } from './sorter.js';
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ export function materialRouter() {
             let material = JSON.parse(fs.readFileSync(`data/materials/${file}`));
             materials.push(material);
         });
-        res.json(materials);
+
+        const sortedMaterials = Sorter.applySortAndFilter(req, materials);
+
+        res.json(sortedMaterials);
     });
 
     router.get('/:name', (req, res) => {
