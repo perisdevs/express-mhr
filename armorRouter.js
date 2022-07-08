@@ -42,7 +42,7 @@ export function armorRouter() {
             
         });
 
-        const sortedArmor = Sorter.applyArmorSortAndFilter(req, armors);
+        const sortedArmor = Sorter.applySortAndFilter(req, armors);
 
         res.json(sortedArmor);
     });

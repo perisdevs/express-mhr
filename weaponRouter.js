@@ -41,7 +41,7 @@ export function weaponRouter() {
             });
         });
 
-        const sortedWeapons = Sorter.applyWeaponSortAndFilter(req, weapons);
+        const sortedWeapons = Sorter.applySortAndFilter(req, weapons);
 
         res.json(sortedWeapons);
     });    

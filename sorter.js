@@ -1,97 +1,25 @@
 import { sortArmorByParam, sortWeaponsAscending, sortWeaponsDescending } from "./sorts.js";
 
 export class Sorter {
-    
-    static applyWeaponSortAndFilter(req, weapons) {
-        let sortedWeapons = structuredClone(weapons);
 
-        const sortOrder = req.query.sortOrder;
-        const sortBy = req.query.sortBy;
-
-        switch (sortOrder) {
-
-            case 'asc': sortedWeapons = sortWeaponsAscending(weapons, sortBy); break;
-
-            case 'desc': sortedWeapons = sortWeaponsDescending(weapons, sortBy); break;
-
-            default: sortedWeapons = sortWeaponsDescending(weapons, sortBy); break;
-                
-        }
+    static applySortAndFilter(req, array) {
+        let unfilteredArray = structuredClone(array);
 
         let filter = {};
-        if (req.query.damage) filter.damage = req.query.damage;        
-        if (req.query.name) filter.name = req.query.name;   
-        if (req.query.slotLevels) filter.slotLevels = req.query.slotLevels;
-        if (req.query.rampageSlot) filter.rampageSlot = req.query.rampageSlot;
-        if (req.query.elementDamage) filter.elementDamage = req.query.elementDamage;
-        if (req.query.element) filter.element = req.query.element;
-        if (req.query.defenseBonus) filter.defenseBonus = req.query.defenseBonus;
-        if (req.query.affinity) filter.affinty = req.query.affinity;
-        if (req.query.type) filter.type = req.query.type;
-        
 
-        let filteredWeapons = [];
-
-        sortedWeapons.forEach((weapon) => {
-
-            let matchesFilter = true;
-
-            for (const param in filter) {
-
-                switch (param) {
-
-                    case 'name': if (!weapon.name.includes(filter.name)) matchesFilter = false; break;
-
-                    case 'slotLevels':
-                        Array.from(filter.slotLevels).forEach((slot, i) => {
-                            if (parseInt(slot) != weapon.slotLevels[i]) matchesFilter = false;
-                        });
-                        break;
-
-                    case 'element':
-                        if (weapon.elementDamage) {
-                            if (filter.element != weapon.elementDamage.type) matchesFilter = false;
-                        } else matchesFilter = false;
-                        break;
-
-                    case 'elementDamage':
-                        if (weapon.elementDamage) {
-                            if (filter.elementDamage != weapon.elementDamage.damage) matchesFilter = false;
-                        } else matchesFilter = false;
-                        break;
-                        
-                    default: if (weapon[param] != filter[param]) matchesFilter = false; break;
-                }
-                
-            }
-
-            if (matchesFilter) filteredWeapons.push(weapon);
-        });                
-
-        if (filteredWeapons[0]) {
-            return filteredWeapons;
-        } else return sortedWeapons;
-    }
-
-    static applyArmorSortAndFilter(req, armor) {
-        let sortedArmor = structuredClone(armor);
-        sortedArmor = sortArmorByParam(req.query.sortBy, req.query.sortOrder, armor);
-
-        let filter = {};
         for (const param in req.query) {
 
             switch (param) {
-
                 case 'sortBy': break;
                 case 'sortOrder': break;
 
                 default: filter[param] = req.query[param]; break;
-            }            
+            }
         }
 
-        let filteredArmor = [];
-        
-        sortedArmor.forEach((armor) => {
+        let filteredArray = [];
+
+        unfilteredArray.forEach((obj) => {
 
             let matchesFilter = true;
 
@@ -99,23 +27,134 @@ export class Sorter {
 
                 switch (param) {
 
-                    case 'name': if (!armor.name.includes(filter.name)) matchesFilter = false; break;
+                    case 'name': if (!obj.name.includes(filter.name)) matchesFilter = false; break;
 
                     case 'skillSlots':
                         Array.from(filter.skillSlots).forEach((slot, i) => {
-                            if (parseInt(slot) != armor.skillSlots[i]) matchesFilter = false;
+                            if (parseInt(slot) != obj.skillSlots[i]) matchesFilter = false;
                         });                        
                         break;
 
-                    default: if (armor[param] != filter[param]) matchesFilter = false; break;
+                    case 'slotLevels':
+                        Array.from(filter.slotLevels).forEach((slot, i) => {
+                            if (parseInt(slot) != obj.slotLevels[i]) matchesFilter = false;
+                        });
+                        break;
+
+                    case 'element':
+                        if (obj.elementDamage) {
+                            if (filter.element != obj.elementDamage.type) matchesFilter = false;
+                        } else matchesFilter = false;
+                        break;
+
+                    case 'elementDamage':
+                        if (obj.elementDamage) {
+                            if (filter.elementDamage != obj.elementDamage.damage) matchesFilter = false;
+                        } else matchesFilter = false;
+                        break;
+
+                    default: if (obj[param] != filter[param]) matchesFilter = false; break;
                 }
             }
 
-            if (matchesFilter) filteredArmor.push(armor);
+            if (matchesFilter) filteredArray.push(obj);
         });
 
-        if (filteredArmor[0]) {
-            return filteredArmor;
-        } else return sortedArmor;
+        const sortOrder = req.query.sortOrder;
+        const sortBy = req.query.sortBy;
+
+        switch (sortBy) {
+
+            case 'name':
+                filteredArray.sort((a, b) => {
+                    let x = a.name.toLowerCase();
+                    let y = b.name.toLowerCase();
+
+                    switch (sortOrder) {
+                        case 'asc': if (x > y) return 1; if (x < y) return -1; break;
+                        case 'desc': if (x > y) return -1; if (x < y) return 1; break;
+                        default: if (x > y) return -1; if (x < y) return 1; break;
+                    }
+                });
+                break;
+
+            case 'type':
+                filteredArray.sort((a, b) => {
+                    let x = a.type.toLowerCase();
+                    let y = b.type.toLowerCase();
+
+                    switch (sortOrder) {
+                        case 'asc': if (x > y) return 1; if (x < y) return -1; break;
+                        case 'desc': if (x > y) return -1; if (x < y) return 1; break;
+                        default: if (x > y) return -1; if (x < y) return 1; break;
+                    }
+                });
+                break;
+
+            case 'skillSlots':
+                filteredArray.sort((a, b) => {
+
+                    let sumA = 0;
+                    a.skillSlots.forEach((level) => {
+                        sumA += level;
+                    });
+
+                    let sumB = 0;
+                    b.skillSlots.forEach((level) => {
+                        sumB += level;
+                    });
+
+                    switch (sortOrder) {
+                        case 'asc': return sumA - sumB;
+                        case 'desc': return sumB - sumA;
+                        default: return sumB - sumA;
+                    }
+                });
+                break;
+
+            case 'slotLevels':
+                filteredArray.sort((a, b) => {
+
+                    let sumA = 0;
+                    a.slotLevels.forEach((level) => {
+                        sumA += level;
+                    });
+
+                    let sumB = 0;
+                    b.slotLevels.forEach((level) => {
+                        sumB += level;
+                    });
+
+                    switch (sortOrder) {
+                        case 'asc': return sumA - sumB;
+                        case 'desc': return sumB - sumA;
+                        default: return sumB - sumA;
+                    }
+                });
+                break;
+                
+            case 'elementDamage':
+                filteredArray.sort((a, b) => {
+                    switch (sortOrder) {
+                        case 'asc': return a.elementDamage.damage - b.elementDamage.damage; break;
+                        case 'desc': return b.elementDamage.damage - a.elementDamage.damage; break;
+                        default: return b.elementDamage.damage - a.elementDamage.damage; break;
+                    }
+                });
+                break;
+
+            default:
+                filteredArray.sort((a, b) => {
+                    switch (sortOrder) {
+                        case 'asc': return a[sortBy] - b[sortBy]; break;
+                        case 'desc': return b[sortBy] - a[sortBy]; break;
+                        default: return b[sortBy] - a[sortBy]; break;
+                    }
+                });
+                break;
+        }
+
+        return filteredArray;
     }
+    
 }
