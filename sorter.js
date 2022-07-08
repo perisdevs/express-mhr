@@ -1,5 +1,3 @@
-import { sortArmorByParam, sortWeaponsAscending, sortWeaponsDescending } from "./sorts.js";
-
 export class Sorter {
 
     static applySortAndFilter(req, array) {
