@@ -1,7 +1,7 @@
-export class Sorter {
+module.exports = class Sorter {
 
     static applySortAndFilter(req, array) {
-        let unfilteredArray = structuredClone(array);
+        let unfilteredArray = JSON.parse(JSON.stringify(array));
 
         let filter = {};
 

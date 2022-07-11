@@ -1,10 +1,10 @@
-import express from 'express';
-import fs from 'fs';
-import { Sorter } from './sorter.js';
+const express = require('express');
+const fs = require('fs');
+const Sorter = require('./sorter.js');
 
 const router = express.Router();
 
-export function skillRouter() {
+module.exports = function skillRouter() {
 
     router.get('/', (req, res) => {
         let skills = [];
