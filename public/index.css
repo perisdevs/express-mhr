@@ -1,0 +1,9 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    background-color: black;
+    color: burlywood;
+}
+
+.header {
+    border-bottom: 5px solid burlywood;
+}
