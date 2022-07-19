@@ -10,6 +10,7 @@ module.exports = class Sorter {
             switch (param) {
                 case 'sortBy': break;
                 case 'sortOrder': break;
+                case 'pageSize': break;
 
                 default: filter[param] = req.query[param]; break;
             }
@@ -163,7 +164,19 @@ module.exports = class Sorter {
                 break;
         }
 
-        return filteredArray;
+        const pagedArray = [];
+
+        if (req.query.pageSize) {
+            const pageSize = req.query.pageSize;
+
+            for (let i = 0; i < pageSize; i++) {
+                pagedArray.push(filteredArray[i]);
+            }
+        }
+
+        if (pagedArray[0]) {
+            return pagedArray;
+        } else return filteredArray;        
     }
     
 }
